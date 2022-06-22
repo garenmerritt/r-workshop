@@ -32,3 +32,28 @@ Creating different plots of varying colors, shapes, and sizes based on variable(
  gg_base + geom_col(aes(fill = visitors))
 ```
 
+Using theme() to create major projects that you can manually tweak later
+
+```{r}
+gg_base + geom_point(aes(size = visitors, color = visitors), alpha = 0.5) + theme_minimal()
+```
+
+
+Multi-series ggplot graphs. Crucial lesson in grouping.
+
+```{r}
+ggplot(data = ca_np, aes(x = year, y = visitors, group = park_name)) + geom_line()
+```
+
+Faceting ggplot graphs
+
+```{r}
+gg_np + geom_line(show.legend = FALSE) + theme_light() + labs(x = 'year', y = 'annual visitors') +          facet_wrap(~ park_name)
+```
+
+Export with ggsave(). You can adjust height, width, dpi, as well as export type.
+
+```{r}
+ggsave(here("figures", "np_graph.jpg"), dpi = 180, width = 8, height = 7)
+```
+
