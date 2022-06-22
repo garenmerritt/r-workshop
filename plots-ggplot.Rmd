@@ -1,0 +1,34 @@
+---
+title: "Creating graphs in R with 'ggplot2'"
+author: "Garen T. Merritt"
+date: "6/21/2022"
+output: html_document
+---
+
+# Plots with ggplot2
+
+We are going to make plots in R and it's going to be fantastic.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+```
+
+
+```{r}
+ca_np <- read_csv(here("data", "ca.np.csv"))
+```
+
+
+Creating different plots of varying colors, shapes, and sizes based on variable(s).
+
+```{r}
+ gg_base + geom_point(color = "salmon2", size = 3)
+ gg_base +
+ geom_point()
+ gg_base +
+ geom_point(aes(size = visitors, color = visitors), alpha = 0.5)
+ gg_base + geom_col(aes(fill = visitors))
+```
+
