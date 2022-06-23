@@ -1,0 +1,79 @@
+---
+title: "pivot-tables.Rmd"
+author: "Garen T. Merritt"
+date: "6/22/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# attach libraries
+
+library(tidyverse)
+library(readxl)
+library(here)
+library(skimr) # install.packages('skimr')
+library(kableExtra) #install.packages('kableExtra')
+
+```
+
+Intro to pivoting, group-by, summarize, and piping.
+
+```{r}
+# read in data
+
+lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip = 4)
+```
+
+# using skimr is great for reading non-numeric data as summary is   # good for numeric data
+
+```{r}
+
+# explore your data w/ skimr
+
+skimr::skim(lobsters)
+
+```
+
+Group by, pipe, and summarize by one variable
+
+```{r}
+lobsters %>% group_by (year) %>% summarize(count_by_year = n())
+
+```
+
+Multiple variables group by
+
+```{r}
+
+lobsters %>% group_by(site, year) %>% summarize(count_by_year = n())
+
+```
+
+Summarize multiple variables, calc mean, std dev, and account for NAs and save data to variable for future use
+
+```{r}
+
+# lobsters %>% group_by(site, year) %>% summarize(count_by_siteyear = n(), mean_size_mm = mean(size_mm))
+
+# account for NAs
+
+siteyear_summary <- lobsters %>% group_by(site, year) %>% summarize(count_by_siteyear = n(), mean_size_mm = mean(size_mm, na.rm = TRUE), sd_size_mm = sd(size_mm, na.rm = TRUE))
+
+
+```
+
+Utilizing kable() to format tables
+
+```{r}
+# table w/new variable using kable()
+
+siteyear_summary %>% kable()
+
+
+
+```
+
+# R code in-line in Markdown
+
+"There are `r nrow(lobsters)` total lobsters in this report."
